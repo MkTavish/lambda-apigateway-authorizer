@@ -10,6 +10,9 @@ Resources:
       Runtime: python3.9
       CodeUri: ./lambda-authorizer
       Description: HTTP API Gateway Authorizer
+      Environment:
+        Variables:
+          IP_WHITELIST: '[""]' #Enter IPs
       Policies:
         Version: 2012-10-17
         Statement:
@@ -18,7 +21,8 @@ Resources:
               - logs:CreateLogGroup
               - logs:CreateLogStream
               - logs:PutLogEvents
-            Resources: "*"
+              - secretsmanager:GetSecretValue
+            Resource: "*"
 
   FunctionRole:
     Type: 'AWS::IAM::Role'
@@ -27,7 +31,7 @@ Resources:
         Version: 2012-10-17
         Statement:
           - Effect: Allow
-            Principals:
+            Principal:
               Service:
                 - lambda.amazonaws.com
             Action:
