@@ -22,12 +22,11 @@ def get_secret():
 
 # This function checks if the IP_ADDRESS is in the allowed IP_RANGE
 def is_ip_allowed(IP_ADDRESS, IP_RANGE):
-    # Check if any of the ranges is a CIDR block
     for ip_range in IP_RANGE:
-        if '/' in ip_range:  # Check if the range is a CIDR block
+        if '/' in ip_range: 
             if ip_address(IP_ADDRESS) in ip_network(ip_range):
                 return True
-        else:  # The range is a single IP
+        else:
             if IP_ADDRESS == ip_range:
                 return True
     return False
@@ -55,9 +54,6 @@ def lambda_handler(event, context):
      # Check if the source IP is allowed and the Authorization header is valid
     is_ip_valid = is_ip_allowed(source_ip, whitelisted_ips)
     is_auth_valid = event["headers"]["authorization"] == expected_auth_token
-    #print(is_auth_valid)
-    #print(auth_header)
-    print(expected_auth_token)
 
     if is_auth_valid and is_ip_valid:
         response = {

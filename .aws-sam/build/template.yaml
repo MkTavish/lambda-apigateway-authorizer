@@ -12,7 +12,7 @@ Resources:
       Description: HTTP API Gateway Authorizer
       Environment:
         Variables:
-          IP_WHITELIST: '["209.121.54.55"]'
+          IP_WHITELIST: '[""]'
           API_GATEWAY_TOKEN: API_GATEWAY_TOKEN
       Policies:
         Version: '2012-10-17'
