@@ -9,12 +9,57 @@ Resources:
       FunctionName: lambda-auth-whitelist
       Handler: lambda_function.lambda_handler
       Runtime: python3.9
-      CodeUri: ./lambda-authorizer
+      CodeUri: ./lambdas/lambda-authorizer
       Description: HTTP API Gateway Authorizer
       Environment:
         Variables:
           IP_WHITELIST: '[""]' #Enter IPs
           API_GATEWAY_TOKEN: API_GATEWAY_TOKEN
+      Policies:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+              - secretsmanager:GetSecretValue
+            Resource: "*"
+
+  LambdaHTTPAPIGatewayAuthorizer2:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: cloudwatch-sns-alert-slack
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.9
+      CodeUri: ./lambdas/cloudwatch-sns-slack
+      Description: Lambda to deploy cloudwatch alerts to Slack
+      Policies:
+        - Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - logs:CreateLogGroup
+                - logs:CreateLogStream
+                - logs:PutLogEvents
+                - secretsmanager:GetSecretValue
+              Resource: "*"
+
+        - Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - ssm:GetParameter
+              Resource: arn:aws:ssm:*:*:parameter/slack/*
+
+  LambdaHTTPAPIGatewayBackend:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: lambda-backend
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.9
+      CodeUri: ./lambdas/lambda-integration
+      Description: HTTP API Gateway Integration
       Policies:
         Version: 2012-10-17
         Statement:

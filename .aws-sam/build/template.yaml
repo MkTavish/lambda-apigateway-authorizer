@@ -26,6 +26,52 @@ Resources:
           Resource: '*'
     Metadata:
       SamResourceId: LambdaHTTPAPIGatewayAuthorizer
+  LambdaHTTPAPIGatewayAuthorizer2:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: cloudwatch-sns-alert-slack
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.9
+      CodeUri: LambdaHTTPAPIGatewayAuthorizer2
+      Description: Lambda to deploy cloudwatch alerts to Slack
+      Policies:
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - logs:CreateLogGroup
+          - logs:CreateLogStream
+          - logs:PutLogEvents
+          - secretsmanager:GetSecretValue
+          Resource: '*'
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - ssm:GetParameter
+          Resource: arn:aws:ssm:*:*:parameter/slack/*
+    Metadata:
+      SamResourceId: LambdaHTTPAPIGatewayAuthorizer2
+  LambdaHTTPAPIGatewayBackend:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: lambda-backend
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.9
+      CodeUri: LambdaHTTPAPIGatewayBackend
+      Description: HTTP API Gateway Integration
+      Policies:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - logs:CreateLogGroup
+          - logs:CreateLogStream
+          - logs:PutLogEvents
+          - secretsmanager:GetSecretValue
+          Resource: '*'
+    Metadata:
+      SamResourceId: LambdaHTTPAPIGatewayBackend
   FunctionRole:
     Type: AWS::IAM::Role
     Properties:

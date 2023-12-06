@@ -1,0 +1,15 @@
+version = 0.1
+
+[lambda-authorizer.deploy.parameters]
+stack_name = "lambda-authorizer"
+s3_bucket  = "sam-test-dfgdg"
+s3_prefix  = "sam-lambda-1"
+region     = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+
+[lambda-authorizer-2.deploy.parameters]
+stack_name = "lambda-authorizer-2"
+s3_bucket  = "sam-test-dfgdg"
+s3_prefix  = "sam-lambda-2"
+region     = "us-east-1"
+capabilities = "CAPABILITY_IAM"

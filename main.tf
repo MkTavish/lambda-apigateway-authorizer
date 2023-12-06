@@ -1,12 +1,3 @@
-data "aws_lambda_function" "backend_lambda" {
-  function_name = "lambda-backend"
-}
-
-data "aws_lambda_function" "auth_lambda" {
-  function_name = "lambda-auth-whitelist"
-}
-
-
 resource "aws_apigatewayv2_api" "http_api" {
   name          = "example-http-api"
   protocol_type = "HTTP"
@@ -33,6 +24,7 @@ resource "aws_apigatewayv2_route" "get_route" {
   route_key = "GET /get"
   target    = "integrations/${aws_apigatewayv2_integration.http_integration.id}"
   authorizer_id = aws_apigatewayv2_authorizer.http_authorizer.id
+  authorization_type = "CUSTOM"
 }
 resource "aws_apigatewayv2_stage" "example_stage" {
   api_id      = aws_apigatewayv2_api.http_api.id
@@ -45,3 +37,20 @@ resource "aws_apigatewayv2_deployment" "example_deployment" {
   depends_on  = [aws_apigatewayv2_stage.example_stage]
 }
 
+resource "aws_sns_topic" "example_topic" {
+  name = "cloudwatch-slack-topic"
+}
+
+resource "aws_sns_topic_subscription" "lambda_subscription" {
+  topic_arn = aws_sns_topic.example_topic.arn
+  protocol  = "lambda"
+  endpoint  = data.aws_lambda_function.cloudwatch_lambda.arn
+}
+
+resource "aws_lambda_permission" "sns_invoke" {
+  statement_id  = "AllowExecutionFromSNS"
+  action        = "lambda:InvokeFunction"
+  function_name = var.cloudwatch_alerts
+  principal     = "sns.amazonaws.com"
+  source_arn    = aws_sns_topic.example_topic.arn
+}

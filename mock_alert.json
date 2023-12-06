@@ -1,0 +1,32 @@
+{
+    "AlarmName": "api-gateway-error",
+    "AlarmDescription": "Gateway error rate has exceeded 5%",
+    "AWSAccountId": "123456789012",
+    "NewStateValue": "ALARM",
+    "NewStateReason": "Threshold Crossed: 1 out of the last 1 datapoints [5.0 (05/12/21 08:14:00)] was greater than or equal to the threshold (5.0) (minimum 1 datapoint for OK -> ALARM transition).",
+    "StateChangeTime": "2023-12-05T08:15:00.000+0000",
+    "Region": "US East (N. Virginia)",
+    "OldStateValue": "INSUFFICIENT_DATA",
+    "Trigger": {
+      "MetricName": "5XXError",
+      "Namespace": "AWS/ApiGateway",
+      "StatisticType": "Statistic",
+      "Statistic": "Average",
+      "Unit": null,
+      "Dimensions": [
+        {
+          "name": "example-http-api",
+          "value": "apigateway-d0XXXXXXXXXX"
+        }
+      ],
+      "Period": 60,
+      "EvaluationPeriods": 1,
+      "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+      "Threshold": 0.05,
+      "TreatMissingData": "- TreatMissingData: missing",
+      "EvaluateLowSampleCountPercentile": ""
+    },
+    "AlarmArn": "arn:aws:cloudwatch:us-east-1:123456789012:alarm:XXXXXXXXXX",
+    "AlarmConfigurationUpdatedTimestamp": "2023-12-05T08:00:00.000+0000",
+    "LinkToAlarm": "https://us-east-1.console.aws.amazon.com/cloudwatch/home?region=us-east-1#alarmsV2:alarm/XXXXXXXXXX"
+  }
