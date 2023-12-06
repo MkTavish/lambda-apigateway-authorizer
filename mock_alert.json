@@ -3,7 +3,7 @@
     "AlarmDescription": "Gateway error rate has exceeded 5%",
     "AWSAccountId": "123456789012",
     "NewStateValue": "ALARM",
-    "NewStateReason": "Threshold Crossed: 1 out of the last 1 datapoints [5.0 (05/12/21 08:14:00)] was greater than or equal to the threshold (5.0) (minimum 1 datapoint for OK -> ALARM transition).",
+    "NewStateReason": "Threshold Crossed: 1 out of the last 1 datapoints was greater than or equal to the threshold (0.05) (minimum 1 datapoint for OK -> ALARM transition).",
     "StateChangeTime": "2023-12-05T08:15:00.000+0000",
     "Region": "US East (N. Virginia)",
     "OldStateValue": "INSUFFICIENT_DATA",
