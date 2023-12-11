@@ -26,6 +26,14 @@ resource "aws_apigatewayv2_route" "get_route" {
   authorizer_id = aws_apigatewayv2_authorizer.http_authorizer.id
   authorization_type = "CUSTOM"
 }
+
+resource "aws_apigatewayv2_route" "get_route2" {
+  api_id    = aws_apigatewayv2_api.http_api.id
+  route_key = "POST /post"
+  target    = "integrations/${aws_apigatewayv2_integration.http_integration.id}"
+  authorizer_id = aws_apigatewayv2_authorizer.http_authorizer.id
+  authorization_type = "CUSTOM"
+}
 resource "aws_apigatewayv2_stage" "example_stage" {
   api_id      = aws_apigatewayv2_api.http_api.id
   name        = "example"
