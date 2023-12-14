@@ -16,7 +16,23 @@ resource "aws_apigatewayv2_authorizer" "http_authorizer" {
   identity_sources = ["$request.header.Authorization"]
   name             = "lambda-auth-whitelist"
   authorizer_uri = data.aws_lambda_function.auth_lambda.invoke_arn
+  authorizer_credentials_arn = aws_iam_role.apig_lambda_role.arn
   authorizer_payload_format_version = "2.0"
+}
+
+resource "aws_iam_role" "apig_lambda_role" {
+  name = local.apigateway-auth-lambda-role
+  assume_role_policy = data.aws_iam_policy_document.apig_lamnda_role_assume.json
+}
+
+resource "aws_iam_policy" "apig_lambda" {
+  name = local.apig-lambda-policy
+  policy = data.aws_iam_policy_document.apig_lamnda_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "apig_lambda_role_to_policy" {
+  role = aws_iam_policy.apig_lambda.name
+  policy_arn = aws_iam_policy.apig_lambda.arn
 }
 
 resource "aws_apigatewayv2_route" "get_route" {

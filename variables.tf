@@ -14,3 +14,11 @@ variable "lambda_integration" {
 variable "lambda_authorizer" {
   type = string
 }
+
+variable "apig-lambda-policy" {
+  type = string
+}
+
+variable "apigateway-lambda-auth-role" {
+  type = string
+}
